@@ -18,6 +18,8 @@ export const AccountPopover = (props) => {
     [onClose, auth, router]
   );
 
+  const MenuItems = ['Login', 'Register', 'Profile', 'Account', 'Settings', 'Logout']
+
   return (
     <Popover
       anchorEl={anchorEl}
@@ -56,9 +58,16 @@ export const AccountPopover = (props) => {
           }
         }}
       >
-        <MenuItem onClick={handleSignOut}>
+        {/* map through menu items and print each as MenuItem */}
+        {MenuItems.map((item) => (
+          <MenuItem key={item}
+            onClick={handleSignOut}>
+            {item}
+          </MenuItem>
+        ))}
+        {/* <MenuItem onClick={handleSignOut}>
           Sign out
-        </MenuItem>
+        </MenuItem> */}
       </MenuList>
     </Popover>
   );
