@@ -9,8 +9,9 @@ import {
 } from 'amazon-cognito-identity-js';
 
 const poolData = {
-  UserPoolId: 'us-east-2_P9MuPtMPD',
-  ClientId: '455a3bb2uf4cum4artk5708r66'
+  UserPoolId: 'us-east-2_9g6Z4Hijn',
+  ClientId: '4un6gf56p2lk5n1h0b3ik10c1c',
+  AutoConfirmUser: true,
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -220,8 +221,40 @@ export const AuthProvider = (props) => {
     });
   };
 
+  // const signUp = async (email, name, password) => {
+  //   throw new Error('Sign up is not implemented');
+  // };
+
   const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+    const attributeList = [
+      new CognitoUserAttribute({
+        Name: 'email',
+        Value: email
+      }),
+      new CognitoUserAttribute({
+        Name: 'name',
+        Value: name
+      })
+    ];
+
+    return new Promise((resolve, reject) => {
+      userPool.signUp(email, password, attributeList, null, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          const cognitoUser = result.user;
+
+          dispatch({
+            type: HANDLERS.SIGN_UP,
+            payload: {
+              cognitoUser
+            }
+          });
+
+          resolve(cognitoUser);
+        }
+      });
+    });
   };
 
   const signOut = () => {
