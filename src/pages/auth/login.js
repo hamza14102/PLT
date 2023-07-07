@@ -59,19 +59,19 @@ const Page = () => {
     []
   );
 
-  const handleSkip = useCallback(
-    () => {
-      auth.skip();
-      router.push('/');
-    },
-    [auth, router]
-  );
+  // const handleSkip = useCallback(
+  //   () => {
+  //     auth.skip();
+  //     router.push('/');
+  //   },
+  //   [auth, router]
+  // );
 
   return (
     <>
       <Head>
         <title>
-          Login | Devias Kit
+          Login | Production Line Tools
         </title>
       </Head>
       <Box
@@ -179,14 +179,14 @@ const Page = () => {
                 >
                   Continue
                 </Button>
-                <Button
+                {/* <Button
                   fullWidth
                   size="large"
                   sx={{ mt: 3 }}
                   onClick={handleSkip}
                 >
                   Skip authentication
-                </Button>
+                </Button> */}
                 <Alert
                   color="primary"
                   severity="info"

@@ -107,25 +107,25 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
+  // const skip = () => {
+  //   try {
+  //     window.sessionStorage.setItem('authenticated', 'true');
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
+  //   const user = {
+  //     id: '5e86809283e28b96d2d38537',
+  //     avatar: '/assets/avatars/avatar-anika-visser.png',
+  //     name: 'Anika Visser',
+  //     email: 'anika.visser@devias.io'
+  //   };
 
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
-  };
+  //   dispatch({
+  //     type: HANDLERS.SIGN_IN,
+  //     payload: user
+  //   });
+  // };
 
   const signIn = async (email, password) => {
     if (email !== 'demo@devias.io' || password !== 'Password123!') {
@@ -165,7 +165,7 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
+        // skip,
         signIn,
         signUp,
         signOut
