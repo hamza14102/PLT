@@ -1,6 +1,20 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import {
+  CognitoUserPool,
+  CognitoUserAttribute,
+  CognitoUser,
+  AuthenticationDetails,
+} from 'amazon-cognito-identity-js';
+
+const poolData = {
+  UserPoolId: 'us-east-2_P9MuPtMPD',
+  ClientId: '455a3bb2uf4cum4artk5708r66'
+};
+
+const userPool = new CognitoUserPool(poolData);
+
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
   SIGN_IN: 'SIGN_IN',
@@ -127,27 +141,82 @@ export const AuthProvider = (props) => {
   //   });
   // };
 
+  // const signIn = async (email, password) => {
+  //   if (email !== 'demo@devias.io' || password !== 'Password123!') {
+  //     throw new Error('Please check your email and password');
+  //   }
+
+  //   try {
+  //     window.sessionStorage.setItem('authenticated', 'true');
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+
+  //   const user = {
+  //     id: '5e86809283e28b96d2d38537',
+  //     avatar: '/assets/avatars/avatar-anika-visser.png',
+  //     name: 'Anika Visser',
+  //     email: 'anika.visser@devias.io'
+  //   };
+
+  //   dispatch({
+  //     type: HANDLERS.SIGN_IN,
+  //     payload: user
+  //   });
+  // };
+
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
-
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
-
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
+    const authenticationData = {
+      Username: email,
+      Password: password
     };
 
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+    const userData = {
+      Username: email,
+      Pool: userPool
+    };
+
+    const cognitoUser = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => {
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: (result) => {
+          const accessToken = result.getAccessToken().getJwtToken();
+          const idToken = result.getIdToken().getJwtToken();
+
+          // Store the tokens in session storage
+          window.sessionStorage.setItem('accessToken', accessToken);
+          window.sessionStorage.setItem('idToken', idToken);
+
+          // Get the user attributes
+          cognitoUser.getUserAttributes((err, attributes) => {
+            if (err) {
+              reject(err);
+            } else {
+              const user = {
+                id: attributes.find(attr => attr.getName() === 'sub').getValue(),
+                name: attributes.find(attr => attr.getName() === 'name').getValue(),
+                email: attributes.find(attr => attr.getName() === 'email').getValue()
+              };
+              console.log(user);
+
+              dispatch({
+                type: HANDLERS.SIGN_IN,
+                payload: {
+                  user
+                }
+              });
+
+              resolve(user);
+            }
+          });
+        },
+        onFailure: (err) => {
+          reject(err);
+        }
+      });
     });
   };
 
