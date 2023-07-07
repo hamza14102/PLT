@@ -204,13 +204,6 @@ export const AuthProvider = (props) => {
               };
               console.log(user);
 
-              try {
-                window.sessionStorage.setItem('authenticated', 'true');
-                console.log('authenticated and session storage set');
-              } catch (err) {
-                console.error(err);
-              }
-
               dispatch({
                 type: HANDLERS.SIGN_IN,
                 payload: {
