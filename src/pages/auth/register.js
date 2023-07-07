@@ -27,8 +27,11 @@ const Page = () => {
         .string()
         .max(255)
         .required('Name is required'),
+      // ensure password is at least 8 characters long, contains a number, and a special character, and a capital letter
       password: Yup
         .string()
+        .min(8, 'Password must be at least 8 characters long')
+        .matches(/^(?=.*[0-9])(?=.*[!@#$%.^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]/, 'Must contain at least one number, one special character, and one capital letter')
         .max(255)
         .required('Password is required')
     }),
