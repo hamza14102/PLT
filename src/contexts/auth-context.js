@@ -95,24 +95,13 @@ export const AuthProvider = (props) => {
     } catch (err) {
       console.error(err);
     }
-    console.log(isAuthenticated);
 
     if (isAuthenticated) {
-      // const user = {
-      //   id: '5e86809283e28b96d2d38537',
-      //   avatar: '/assets/avatars/avatar-anika-visser.png',
-      //   name: 'Anika Visser',
-      //   email: 'anika.visser@devias.io'
-      // };
-      // console.log(user);
-      // get user from cognito
-      const cognitoUser = userPool.getCurrentUser();
-      console.log(cognitoUser);
       const user = {
-        id: cognitoUser.username,
+        id: '5e86809283e28b96d2d38537',
         avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: cognitoUser.username,
-        email: cognitoUser.email
+        name: 'Anika Visser',
+        email: 'anika.visser@devias.io'
       };
 
       dispatch({
