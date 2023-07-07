@@ -95,13 +95,24 @@ export const AuthProvider = (props) => {
     } catch (err) {
       console.error(err);
     }
+    console.log(isAuthenticated);
 
     if (isAuthenticated) {
+      // const user = {
+      //   id: '5e86809283e28b96d2d38537',
+      //   avatar: '/assets/avatars/avatar-anika-visser.png',
+      //   name: 'Anika Visser',
+      //   email: 'anika.visser@devias.io'
+      // };
+      // console.log(user);
+      // get user from cognito
+      const cognitoUser = userPool.getCurrentUser();
+      console.log(cognitoUser);
       const user = {
-        id: '5e86809283e28b96d2d38537',
+        id: cognitoUser.username,
         avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
+        name: cognitoUser.username,
+        email: cognitoUser.email
       };
 
       dispatch({
@@ -206,6 +217,7 @@ export const AuthProvider = (props) => {
 
               try {
                 window.sessionStorage.setItem('authenticated', 'true');
+                console.log('authenticated and session storage set');
               } catch (err) {
                 console.error(err);
               }
@@ -274,6 +286,12 @@ export const AuthProvider = (props) => {
     const cognitoUser = userPool.getCurrentUser();
     if (cognitoUser) {
       cognitoUser.signOut();
+    }
+    try {
+      window.sessionStorage.setItem('authenticated', 'false');
+      console.log('authenticated and session storage set');
+    } catch (err) {
+      console.error(err);
     }
     dispatch({
       type: HANDLERS.SIGN_OUT
