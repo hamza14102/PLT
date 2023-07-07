@@ -109,12 +109,11 @@ export const AuthProvider = (props) => {
       const cognitoUser = userPool.getCurrentUser();
       console.log(cognitoUser);
       const user = {
-        id: cognitoUser.id,
+        id: cognitoUser.username,
         avatar: '/assets/avatars/avatar-anika-visser.png',
         name: cognitoUser.username,
         email: cognitoUser.email
       };
-      console.log(user);
 
       dispatch({
         type: HANDLERS.INITIALIZE,
@@ -287,12 +286,6 @@ export const AuthProvider = (props) => {
     const cognitoUser = userPool.getCurrentUser();
     if (cognitoUser) {
       cognitoUser.signOut();
-    }
-    try {
-      window.sessionStorage.setItem('authenticated', 'false');
-      console.log('authenticated and session storage set');
-    } catch (err) {
-      console.error(err);
     }
     dispatch({
       type: HANDLERS.SIGN_OUT
