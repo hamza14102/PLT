@@ -109,11 +109,12 @@ export const AuthProvider = (props) => {
       const cognitoUser = userPool.getCurrentUser();
       console.log(cognitoUser);
       const user = {
-        id: cognitoUser.username,
+        id: cognitoUser.id,
         avatar: '/assets/avatars/avatar-anika-visser.png',
         name: cognitoUser.username,
         email: cognitoUser.email
       };
+      console.log(user);
 
       dispatch({
         type: HANDLERS.INITIALIZE,
