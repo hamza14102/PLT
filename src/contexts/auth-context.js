@@ -258,7 +258,17 @@ export const AuthProvider = (props) => {
     });
   };
 
+  // const signOut = () => {
+  //   dispatch({
+  //     type: HANDLERS.SIGN_OUT
+  //   });
+  // };
+
   const signOut = () => {
+    const cognitoUser = userPool.getCurrentUser();
+    if (cognitoUser) {
+      cognitoUser.signOut();
+    }
     dispatch({
       type: HANDLERS.SIGN_OUT
     });
