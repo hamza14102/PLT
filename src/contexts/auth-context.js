@@ -12,6 +12,7 @@ const poolData = {
   UserPoolId: 'us-east-2_9g6Z4Hijn',
   ClientId: '4un6gf56p2lk5n1h0b3ik10c1c',
   AutoConfirmUser: true,
+  AutoVerifyEmail: true,
 };
 
 const userPool = new CognitoUserPool(poolData);
